@@ -3,8 +3,8 @@
 	//determine the absolute URL and redirect
 	function redirect_user($page = 'index.php'){
 	//define the url 
-		$url = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
-	//rm trailing slashes
+		$url = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);//do these need val/sani filters?
+	//rm trailing slashes incase of existance of subfolder(?)
 		$url = rtrim($url, '/\\');
 	//add the page	
 		$url .= '/' . $page;
@@ -22,8 +22,15 @@
 		if (empty($email)){
 			$errors[]='You forgot to enter your email.';
 		}
-		else{//escapes special chars from email for use in query. dbc sets char type 
-			$e = mysqli_real_escape_string($dbc, trim($email));
+		
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+			$errors[]='You have entered an invalid email address';
+		}
+		else{
+			//removes chars - nessessary to use both?
+			$sani_email = filter_var($email, FILTER_SANITIZE_EMAIL);
+			//escapes special chars from email for use in query. dbc sets char type 
+			$e = mysqli_real_escape_string($dbc, trim($sani_email));
 		}
 		
 		
@@ -31,7 +38,7 @@
 			$errors[]='You forgot to enter your pasword.';
 		}
 		else{
-			$p = mysqli_real_escape_string($dbc, trim($pass));
+			$p = mysqli_real_escape_string($dbc, trim($pass));//
 		}
 	
 		
