@@ -44,21 +44,31 @@
 		
 		if(empty($errors)){
 			//retrive user id for username password combo
-			$q = "SELECT user_id, first_name FROM logoninfo WHERE email='$e' AND password='$p' ";//look up SHA1 for password incription
-			$r = mysqli_query($dbc, $q);
+			$q = "SELECT user_id, first_name FROM logoninfo WHERE email=? AND password=? ";//look up SHA1 for password incription
+			//prep statment
+			$stmt = mysqli_prepare($dbc, $q);
+			mysqli_stmt_bind_param($stmt, 'ss', $e, $p);
 			//run dis query
-		
+			$r = mysqli_stmt_execute($stmt);
+					//previously used $r = @mysqli_query($dbc, $q);
+			//Transfer the result set from prepared statement to buffer
+			mysqli_stmt_store_result($stmt);
 			//check the result
-			if(mysqli_num_rows($r) == 1){
-				//fetch the record
-				$row = mysqli_fetch_array($r, MYSQLI_ASSOC);
+			if(mysqli_stmt_affected_rows($stmt) == 1){
+				//return buffered data
+				mysqli_stmt_fetch($stmt);
+						//previously used $row = mysqli_fetch_array($r, MYSQLI_ASSOC);
+				//create array
+				$row = array('user_id'=> '$user_id', 'first_name' => '$first_name');
 				//return true and the record
 				return array(TRUE, $row);
 			}
+			
 			else{
 				 //not a match
 				 $errors[] = 'The username and pasword entered do not match those on file.';
 			}
+			mysqli_stmt_close($stmt);
 		} // end of empty errors
 		
 		//return false and the errors
