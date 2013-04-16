@@ -24,7 +24,7 @@
 	echo "<h1>Logged out</h1>
 	<p>You are now logged out</p>";
 ?>
-<!--add content + style. this is homepage.-->
+<!--add content + style-->
 <html>
 	<head>
 		<link href="bootstrap/css/bootstrap.css" rel="stylesheet">

@@ -16,10 +16,10 @@
 	
 	//form validation
 	function check_login($dbc, $email = '' , $pass = '' ){
-		
-		//require('lu_includes/password.php');
-		
-		$errors = array(); //initialize errors array
+		//include password_compat
+		require('lu_includes/password.php');
+		//initialize errors array
+		$errors = array(); 
 		//validate..
 		if (empty($email)){
 			$errors[]='You forgot to enter your email.';
@@ -46,24 +46,31 @@
 		
 		if(empty($errors)){
 			//retrive user id for username password combo
-			$q = "SELECT user_id, first_name FROM logoninfo WHERE email=? AND password=? ";
+			$q = "SELECT user_id, first_name, password FROM logoninfo WHERE email=? ";
 			//Initialize a statement and return an object to use with _prepare?
 			$stmt = mysqli_stmt_init($dbc);
 			//prep statment
 			mysqli_stmt_prepare($stmt, $q);
 			//Bind variables to prepared statement as parameters
-			mysqli_stmt_bind_param($stmt, 'ss', $e, $p);
+			mysqli_stmt_bind_param($stmt, 's', $e);
 			//run dis query
 			mysqli_stmt_execute($stmt);
 			// bind result to variable
-			mysqli_stmt_bind_result($stmt, $user_id, $first_name);
+			mysqli_stmt_bind_result($stmt, $user_id, $first_name, $password);
 			//fetch that data
 			if(mysqli_stmt_fetch($stmt)){
-			//if(mysqli_stmt_num_rows == 1){
+				//check if pass provided equals hashed pass on db
+				if (password_verify($p, $password)){
 				//create array
 				$row = array('user_id'=> $user_id, 'first_name' => $first_name);
 				//return true and the record
 				return array(TRUE, $row);
+				}
+				else{
+				 //not a match. password provided does not equal password on db
+				 $errors[] = 'The username and pasword entered do not match those on file.';
+				}
+				
 			}
 			
 			else{
