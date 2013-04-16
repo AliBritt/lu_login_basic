@@ -2,10 +2,7 @@
 
 	//access the session
 	session_start();
-	
-	/*foreach ($_SESSION as $i=>$j){
-		echo $i . $j . "<br>";*/
-	
+
 	//if no session is present redirect the user
 	if(!isset($_SESSION['user_id'])){
 		//get the functions
@@ -26,13 +23,8 @@
 	//print message
 	echo "<h1>Logged out</h1>
 	<p>You are now logged out</p>";
-	/*
-	foreach ($_SESSION as $i=>$j){
-		echo $i . $j . "<br>";
-	}*/
-	//need html/styles for logged out page!
 ?>
-
+<!--add content + style. this is homepage.-->
 <html>
 	<head>
 		<link href="bootstrap/css/bootstrap.css" rel="stylesheet">

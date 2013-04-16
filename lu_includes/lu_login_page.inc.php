@@ -7,6 +7,7 @@
 			echo " - $msg <br />\n";
 		}
 		echo '</p><p>Please try again.</p>';
+		
 	}
 	
 ?>
@@ -15,7 +16,7 @@
 <html lang="en"><head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>Sign in · Twitter Bootstrap</title>
+    <title>Sign in · Lu Login Basic</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">

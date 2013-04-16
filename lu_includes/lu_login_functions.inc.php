@@ -17,13 +17,15 @@
 	//form validation
 	function check_login($dbc, $email = '' , $pass = '' ){
 		
+		//require('lu_includes/password.php');
+		
 		$errors = array(); //initialize errors array
 		//validate..
 		if (empty($email)){
 			$errors[]='You forgot to enter your email.';
 		}
 		
-		if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+		else if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
 			$errors[]='You have entered an invalid email address';
 		}
 		else{
@@ -38,34 +40,34 @@
 			$errors[]='You forgot to enter your pasword.';
 		}
 		else{
-			$p = mysqli_real_escape_string($dbc, trim($pass));//
+			$p = mysqli_real_escape_string($dbc, trim($pass));
 		}
 	
 		
 		if(empty($errors)){
 			//retrive user id for username password combo
-			$q = "SELECT user_id, first_name FROM logoninfo WHERE email=? AND password=? ";//look up SHA1 for password incription
+			$q = "SELECT user_id, first_name FROM logoninfo WHERE email=? AND password=? ";
+			//Initialize a statement and return an object to use with _prepare?
+			$stmt = mysqli_stmt_init($dbc);
 			//prep statment
-			$stmt = mysqli_prepare($dbc, $q);
+			mysqli_stmt_prepare($stmt, $q);
+			//Bind variables to prepared statement as parameters
 			mysqli_stmt_bind_param($stmt, 'ss', $e, $p);
 			//run dis query
-			$r = mysqli_stmt_execute($stmt);
-					//previously used $r = @mysqli_query($dbc, $q);
-			//Transfer the result set from prepared statement to buffer
-			mysqli_stmt_store_result($stmt);
-			//check the result
-			if(mysqli_stmt_affected_rows($stmt) == 1){
-				//return buffered data
-				mysqli_stmt_fetch($stmt);
-						//previously used $row = mysqli_fetch_array($r, MYSQLI_ASSOC);
+			mysqli_stmt_execute($stmt);
+			// bind result to variable
+			mysqli_stmt_bind_result($stmt, $user_id, $first_name);
+			//fetch that data
+			if(mysqli_stmt_fetch($stmt)){
+			//if(mysqli_stmt_num_rows == 1){
 				//create array
-				$row = array('user_id'=> '$user_id', 'first_name' => '$first_name');
+				$row = array('user_id'=> $user_id, 'first_name' => $first_name);
 				//return true and the record
 				return array(TRUE, $row);
 			}
 			
 			else{
-				 //not a match
+				 //not a match. error occurred with fetch.returned false.
 				 $errors[] = 'The username and pasword entered do not match those on file.';
 			}
 			mysqli_stmt_close($stmt);
