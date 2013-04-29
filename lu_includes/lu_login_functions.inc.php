@@ -30,9 +30,7 @@
 		}
 		else{
 			//removes chars - nessessary to use both?
-			$sani_email = filter_var($email, FILTER_SANITIZE_EMAIL);
-			//escapes special chars from email for use in query. dbc sets char type 
-			$e = mysqli_real_escape_string($dbc, trim($sani_email));
+			$e = filter_var($email, FILTER_SANITIZE_EMAIL);
 		}
 		
 		
@@ -46,7 +44,7 @@
 		
 		if(empty($errors)){
 			//retrive user id for username password combo
-			$q = "SELECT user_id, first_name, password FROM logoninfo WHERE email=? ";
+			$q = "SELECT user_id, first_name, pass FROM logoninfo WHERE email=? ";
 			//Initialize a statement and return an object to use with _prepare?
 			$stmt = mysqli_stmt_init($dbc);
 			//prep statment

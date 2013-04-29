@@ -33,10 +33,11 @@
 		else{
 			echo "<p>Please enter a valid email address</p>";
 		}
-		//password
+		//password(change login to use this too?)
 		if(preg_match('/^\w{4,20}$/', $trimmed['pass1'])){
 			if($trimmed['pass1'] == $trimmed['pass2']){
-				$p = $trimmed['pass1'];//why use my_real_escape_string here?( \x00, \n, \r, \, ', " and \x1a are all dealt with by preg_match)
+				//why use my_real_escape_string here?( \x00, \n, \r, \, ', " and \x1a are all dealt with by preg_match)
+				$p = mysqli_real_escape_string($dbc,$trimmed['pass1']);
 			}
 			else{
 				echo "<p>Your passwords do not match</p>";

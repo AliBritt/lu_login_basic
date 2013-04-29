@@ -15,7 +15,9 @@
 	//print message
 	echo "<h1>Logged in</h1>
 	<p>You are now logged in {$_SESSION['first_name']}</p>
-	<p><a href=\"lu_logout.php\">Logout</a></p>";
+	<p><a href=\"lu_logout.php\">Logout</a></p>
+	<p><a href=\"lu_change_pass.php\">Change password</a></p>";
+	
 
 ?><!--add content + style. this is homepage.-->
 <html>

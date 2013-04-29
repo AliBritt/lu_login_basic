@@ -1,16 +1,3 @@
-<?php # lu_login_page.inc.php
-	
-	//error messages
-	if (isset($errors) && !empty($errors)){
-		echo '<h1> Error!</h1> <p class="error"> The following errors(s) occurred:<br />';
-		foreach ($errors as $msg) { // prints off each item from $errors array as $msg's
-			echo " - $msg <br />\n";
-		}
-		echo '</p><p>Please try again.</p>';
-		
-	}
-	
-?>
 
 <!DOCTYPE html>
 <html lang="en"><head>
@@ -75,16 +62,16 @@
 
     <div class="container">
 
-      <form class="form-signin" action="lu_login.php" method="POST">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input class="input-block-level" type="text" name="email" placeholder="Email">
-        <input class="input-block-level" type="password" name="pass" placeholder="Password">
-        <!--<a href="new_user_final.php">Sign Up</a>-->
+      <form class="form-signin" action="lu_change_pass.php" method="POST">
+        <h2 class="form-signin-heading">Change password</h2>
+        <input class="input-block-level" type="password" name="pass1" placeholder="Password">
+        <input class="input-block-level" type="password" name="pass2" placeholder="Confirm Password">
+        <!--<a href="new_user_final.php">Sign Up</a>
         <label class="checkbox">
           <input value="remember-me" type="checkbox"> Remember me
-        </label>
-        <p><a href="lu_forgot_pass.php">Forgot password</a></p>
-        <button class="btn btn-large btn-primary" type="submit">Sign in</button>
+        </label>-->
+        
+        <button class="btn btn-large btn-primary" type="submit">Go</button>
         
       </form>
       
